@@ -2,3 +2,4 @@
 *.sqlite3
 .env_key_gen
 venv/
+*.pyc

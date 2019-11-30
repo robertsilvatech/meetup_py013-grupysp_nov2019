@@ -1,0 +1,35 @@
+version: "3.7"
+
+services:
+  prd-nginx:
+    image: nginx
+    networks:
+      - "meetup"
+    volumes:
+        - ${PWD}/nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 10s
+  django-simple:
+    image: treborbrz/django_in_docker
+    environment:
+      - SECRET_KEY=o@a@uv!m4y4*_mp4-b%!_z4w(lutajupp*y8w615p2z)x40yp4
+    stop_grace_period: 1m30s
+    networks:
+      - "meetup"
+    ports:
+      - '8000:8000'
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+
+networks: 
+  meetup:
